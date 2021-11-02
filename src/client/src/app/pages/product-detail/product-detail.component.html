@@ -1,0 +1,29 @@
+<!-- <p>product-detail works!</p> -->
+
+
+<div class="product">
+  <ul>
+    <li *ngFor="let product of products$ | async" >
+<div class="product_row">
+<div>
+  <img src={{product.image}} alt="image">
+</div>
+  <div class="product_info">
+    <p class="product_title">{{product.title}}</p>
+  Price:$<strong class="product_price">{{product.price}}</strong>
+  <p class="product_desctiption">{{product.description}}</p>
+ <div class="cart_buttons">
+ 
+<div class="add_buttons">
+<button class="add_cart" (click)="addToCart(product)">Add to Cart</button>
+</div>
+<div >
+  <button class="buy_now">Buy Now</button>
+</div>
+ </div>
+</div>
+</div>
+    </li>
+  </ul>
+
+</div>
