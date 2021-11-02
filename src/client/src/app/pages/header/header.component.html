@@ -1,0 +1,28 @@
+
+
+<div class="container">
+  <div>
+    <img (click)="home()" src="https://www.pikpng.com/pngl/b/327-3272114_amazon-de-marketplace-amazon-logo-on-black-clipart.png" alt="">
+  </div>
+  <div class="searchInput">
+<span>    <input type="text"></span>
+ <span>   <mat-icon class="searchIcon">search</mat-icon>
+ </span>
+  </div>
+  <div class="orders">
+    <p>Hello, Sign in </p>
+    <h4>Account & Lists</h4>
+
+  </div>
+  <div class="orders">
+    <p>Returns</p>
+    <h4>& Orders</h4>
+  </div>
+  <div class="cart" >
+    <div class="carts" *ngIf="(cart$ | async) as carts">
+      <span id="cart-number">    {{carts.length}}</span>
+    <div id="cartIcon" ><mat-icon  (click)="cart()">add_shopping_cart</mat-icon><span class="cart-text">cart</span></div>
+
+  </div>
+  </div>
+</div>
