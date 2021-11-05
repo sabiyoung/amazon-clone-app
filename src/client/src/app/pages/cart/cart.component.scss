@@ -1,0 +1,62 @@
+
+img {
+  max-height: 200px;
+  width: 100%;
+  padding-top: 30px;
+}
+.product_price {
+  color: rgb(37, 35, 35);
+}
+.product_title {
+  font-size: 18px;
+  font-weight: 700;
+
+}
+
+ul{
+   color: #333;
+  list-style: none;
+  padding: 20px;
+
+}
+li {
+  padding: 20px;
+
+}
+.product_row {
+  display: flex;
+  border: solid 1px lightgray;
+  padding: 10px;
+  height: 250px;
+  width: 1000px;
+
+}
+.product_info {
+padding-left: 20px;
+}
+
+.number {
+  width: 35px;
+  border-radius: 5px;
+  border: 1px solid #111;
+}
+.delete_button {
+  color: rgb(70, 142, 170);
+  border: none;
+  background-color: white;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.product {
+  display: flex;
+
+ 
+}
+.quantity {
+  display: flex;
+  padding-top: 10px;
+}
+
+.subtotalOne {
+padding-left: 850px;
+}
