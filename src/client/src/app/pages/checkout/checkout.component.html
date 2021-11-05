@@ -1,0 +1,63 @@
+
+<div class="container">
+
+    <h1 *ngIf="products$ | async as carts">Checkout({{ carts.length}}{{carts.length <= 1  ? 'item' : "items"}})</h1>
+    <div class="wrapper">
+    <div class="payment__section">
+      <div class="payment__title">
+        <h3>Name</h3>
+      </div>
+      <div class="payment__address">
+        <p class="name">John</p>
+      </div>
+    </div>
+    <div class="payment__section">
+      <div class="payment__title">
+        <h3>Delivery Address</h3>
+      </div>
+      <div class="payment__address">
+        <p>12345 Sahara</p>
+        <p>Las Vegas, NV</p>
+      </div>
+    </div>
+
+    <!-- <div class="payment__section">
+      <div class="payment__title">
+        <h3>Billing Address</h3>
+      </div>
+      <div class="payment__address">
+        <p>12345 Sahara</p>
+        <p>Las Vegas, NV</p>
+      </div>
+    </div> -->
+
+    <div class="payment__section">
+      <div class="payment__title">
+        <h3>Review items and delivery</h3>
+      </div>
+
+  <div class="payment__address">
+   <ul>
+     <li *ngFor="let product of products$ | async">
+       <div class="checkout_products">
+       <div class="checkoutProduct__image"><img  src={{product.image}}/></div>
+      <div>
+        <p class="checkoutProduct__title">{{ product.title }}</p>
+        <p class="checkoutProduct__price">
+        <small>$</small>
+      <strong class="product_price">{{ product.price }}</strong>
+     </p>
+     <button class="delete_button" (click)="deleteFromCart(product)">
+      delete
+    </button>
+      </div>
+    </div>
+    <div>
+     <h3>Subtotal: <small>$</small>{{getAmount().toFixed(2)}}</h3>
+    </div>
+     </li>
+   </ul>
+  </div>
+</div>
+</div>
+</div>
