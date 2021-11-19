@@ -4,7 +4,8 @@ import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { ProductService } from 'src/app/services/product.service';
 import { UserService } from 'src/app/services/user.service';
-import { deleteFromCart, deleteFromCartFailure, deleteFromCartSuccess } from '../../actions/product/product.actions';
+import { loadCartSuccess } from '../../actions/cart/cart.actions';
+
 import {
   createProducts,
   createProductsFailure,
@@ -13,6 +14,7 @@ import {
   loadProductsFailure,
   loadProductsSuccess,
 } from '../../actions/product/product.actions';
+import { loginUserSuccess } from '../../actions/user/user.actions';
 
 @Injectable()
 export class ProductEffects {
@@ -39,17 +41,17 @@ export class ProductEffects {
     )
   );
 
-// deleteUsers$ = createEffect(() =>
-// this.actions$.pipe(
-//   ofType(deleteFromCart),
-//   mergeMap((action) =>
-//     this.productService.deleteProduct(action.data).pipe(
-//       map((data) => deleteFromCartSuccess({ data })),
-//       catchError((error) => of(deleteFromCartFailure({ error })))
-//     )
-//   )
-// )
-// );
+  // loadSign$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(loadCartSuccess),
+  //     mergeMap(() =>
+  //       this.productService.getProducts().pipe(
+  //         map((data) => loadProductsSuccess({ data })),
+  //         catchError((error) => of(loadProductsFailure({ error })))
+  //       )
+  //     )
+  //   )
+  // );
   constructor(
     private actions$: Actions,
     private productService: ProductService,

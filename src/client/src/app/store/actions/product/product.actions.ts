@@ -42,20 +42,7 @@ export const updateCartSuccess = createAction(
   props<{ data: Product}>()
 );
 
-export const deleteFromCart = createAction(
-  '[Product] Delete Product',
-  props<{data: Product}>()
-);
 
-export const deleteFromCartSuccess = createAction(
-  '[Product] Delete Product Success',
-  props<{ data: Product }>()
-);
-
-export const deleteFromCartFailure = createAction(
-  '[Product] Delete Product Failure',
-  props<{ error: Error }>()
-);
 export const getTotal = createAction(
   '[Product] Get Total',
   props<{data: Product}>()
@@ -78,7 +65,4 @@ export const increaseQty = createAction(
 export const decreaseQty = createAction(
   '[Product] decrese Quantity',
 );
-export const getTotalAndQuantity = createAction(
-  '[Product] Get Total And Quantity',
-  props<{ data: Product}>()
-);
+

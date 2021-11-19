@@ -31,9 +31,5 @@ productDetail(selectedProduct: Product) {
   this.router.navigate(['/product-detail'])
 }
 
-ratingArray(arr:any) {
-const newArray = Array.from({length:arr}, (_, index) => index + 1)
-return newArray;
-}
 
 }
