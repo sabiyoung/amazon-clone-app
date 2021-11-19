@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import  mongoose from 'mongoose';
 import type { User } from '../../shared/models/user.model.js';
 
 const {Schema, model} = mongoose

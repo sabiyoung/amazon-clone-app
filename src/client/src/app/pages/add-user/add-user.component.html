@@ -1,10 +1,13 @@
-<p>add-user works!</p>
-<div>
+
+<div class="register">
+<div class="register__container">
+  <h1>Register here</h1>
   <form [formGroup]= 'addUser'>
-<input type="text" formControlName='name' placeholder="name"> <br>
-<input type="text" formControlName='username' placeholder="username"> <br>
-<input type="text" formControlName='email' placeholder="email" > <br>
+<input type="text" formControlName='name' placeholder="name">
+<input type="text" formControlName='username' placeholder="username">
+<input type="text" formControlName='email' placeholder="email" >
 <input type="text" formControlName='password' placeholder="password"> <br>
-<button (click)="addUsers()">add product</button>
+<button class="register__signInButoon" (click)="addUsers()"[disabled]="addUser.invalid">register</button>
   </form>
+</div>
 </div>

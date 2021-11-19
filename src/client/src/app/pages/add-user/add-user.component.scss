@@ -1,0 +1,38 @@
+.register__container {
+  width: 300px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid lightgray;
+  padding:20px;
+  background-color: gray;
+}
+.register {
+  background-color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+
+}
+
+.register__container > form > input {
+  height: 30px;
+  margin-bottom: 10px;
+  width: 98%;
+  border-color: lightgray;
+  text-align: center;
+}
+.register__signInButoon {
+  background: #222;
+  border-radius: 2px;
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+  color: #fff;
+}
+
