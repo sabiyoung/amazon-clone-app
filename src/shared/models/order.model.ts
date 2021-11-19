@@ -1,14 +1,14 @@
-import type mongoose from 'mongoose';
-import type { Product } from './products.model';
+import type * as mongoose from 'mongoose';
+import type { Product } from './products.model.js';
+import type { User } from './user.model.js';
 
 export interface Order{
     _id: string;
-   products:{
-       priceSalesTime: number,
-        product: Product;
-   };
-   total: number;
+    user?: User;
+    items?:Product[];
+   total_price?: number;
+   item_count?: number;
+   quantity?:number
 
    
- 
 }
