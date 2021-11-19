@@ -31,22 +31,6 @@ selectProduct(id: string) {
   this.selectedProductId = id;
 }
 
-deleteProduct(product: Product) {
-  return this.api
-    .delete<{ data: Product}>('delete-user/' + product._id)
-    .pipe(map((res) => res.data));
-}
 
-getTotal() {
-  this.getCartTotal.reduce((amount:any, item:any) =>  item.price + amount, 0);
-  
-  }
-  getTotalPrice() : number{
-    let grandTotal = 0;
-    this.cartItemList.map((a:any)=>{
-      grandTotal += a.total;
-    })
-    return grandTotal;
-  }
 
 }

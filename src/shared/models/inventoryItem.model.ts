@@ -6,6 +6,7 @@ export interface Inventory{
      shipped: boolean;
      priceAtSale: number;
      damaged: boolean;
+    sold: boolean;
      discount: number
    
 }
