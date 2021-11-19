@@ -1,33 +1,42 @@
 <div class="product">
   <div>
-    <ul>
-      <li *ngFor="let product of products$ | async; let i = index">
+
+    <ng-container *ngIf="(cart$ | async ) as cart">
+
+      <div *ngIf="(cart.user) as user">
+
+      <div *ngIf="(cart.items) as carts" >
+       <h1> {{carts.length === 0 ?  "Your Cart is empty." :  user.name + "'s Shopping Cart"}}</h1>
+      </div>
+    </div>
+      <ng-container *ngFor="let item of cart.items">
         <div class="product_row">
           <div>
-            <img src="{{ product.image }}" alt="image" />
+            <img src="{{ item.product.image }}" alt="image" />
           </div>
           <div class="product_info">
-            <p class="product_title">{{ product.title }}</p>
-            Price: <small>$</small><strong class="product_price">{{ product.price }}</strong>
-            <div class="quantity">
-              Qnt:<button (click)="onIncrement()">+</button
-              >{{ quantity$ | async }}<button (click)="onDecrement()">-</button>
-              <!-- Qnt:  <input type="number" value="1"> -->
-              <button class="delete_button" (click)="deleteFromCart(product)">
+            <p class="product_title">{{ item.product.title }}</p>
+
+            Price: <small>$</small><strong class="product_price">{{ item.product.price }}</strong>
+       <div class="quantity" >
+              Qty: <button (click)="addToCart(item.product)">+</button> {{item.quantity}}<button (click)="onDecrement(item.product)">-</button>
+              <button class="delete_button" (click)="deleteFromCart(item.product)">
                 delete
               </button>
             </div>
-           
+
           </div>
-        </div>
-    
-      </li>
-    </ul>
+        </div> <br>
+
+  </ng-container>
+
+    </ng-container>
+
     <!-- <div class="subtotalOne" *ngIf="products$ | async as carts">
       <h3>Subtotal({{carts.length}}{{carts.length <= 1  ? 'item' : "items"}}):${{ getAmount().toFixed(2)}}</h3>
     </div> -->
   </div>
- 
+
 <div>
   <app-subtotal></app-subtotal>
 </div>

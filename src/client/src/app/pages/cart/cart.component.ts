@@ -1,12 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { Observable, pipe } from 'rxjs';
 import { AppState } from 'src/app/store';
-import { addToCartSelector, quantitySelector, selectedProductSelector } from 'src/app/store/selectors/product/product.selectors';
+import { addToCartSelector} from 'src/app/store/selectors/product/product.selectors';
 import { Product } from '../../../../../shared/models/products.model';
-import { decreaseQty, deleteFromCart, deleteFromCartSuccess, getTotalSuccess, increaseQty, loadProducts } from 'src/app/store/actions/product/product.actions';
+import { Cart } from '../../../../../shared/models/cart.model';
+import { decreaseQty,  getTotalSuccess, increaseQty, loadProducts } from 'src/app/store/actions/product/product.actions';
 import { ProductService } from 'src/app/services/product.service';
+import { cartSelector } from 'src/app/store/selectors/cart/cart.selectors';
+import {  deleteFromCart, loadCart, updateCart } from 'src/app/store/actions/cart/cart.actions';
+import { map, tap } from 'rxjs/operators';
+import { updateReduceCart } from './../../store/actions/cart/cart.actions';
+import { CartService } from 'src/app/services/cart.service';
+
 
 
 @Component({
@@ -15,50 +22,40 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
-  quantity$!: Observable<number>;
   products$: Observable<Product[]>;
-products: Product[] = []
-quantity:Product[] = []
+  products: []=[]
+  cart$!: Observable<Cart | null>;
+
+
   constructor(
     private store: Store<AppState>,
     private router: Router,
-    private productService: ProductService,
- 
+    private cartService: CartService,
+
   ) {
     this.products$ = this.store.select(addToCartSelector)
-    this.quantity$ = this.store.select(quantitySelector);
-  
+   this.cart$ = this.store.select(cartSelector)
   }
+
   ngOnInit(): void {
+  this.store.dispatch(loadCart())
 
   }
 
-getAmount() {
-  let totalAmount = 0
-  this.products$.subscribe(products => this.products = products)
-  this.products.forEach(product => {
-    (product.price * product.quantity)
-totalAmount += product.price
-  })
-  return totalAmount
+
+onDecrement(product:Product) {
+  // this.cartService.updateCartReduce(product)
+ this.store.dispatch(updateReduceCart({data:product}))
 }
 
-onIncrement() {
- this.store.dispatch(increaseQty())
-// this.products$.subscribe(products => this.quantity = products)
-//  this.quantity.forEach(product=> {
-// return product.quantity + 1
-//  })
-}
 
-onDecrement() {
-  this.store.dispatch(decreaseQty());
-}
+addToCart(product: Product) {
+  this.store.dispatch(updateCart({data:product}))
+ }
   deleteFromCart(product: Product) {
-    this.store.dispatch(deleteFromCartSuccess({data: product}))
+    this.store.dispatch(deleteFromCart({data: product}))
         console.log(`product '${product._id}' deleted successfully`);
       }
-
 
 
 
