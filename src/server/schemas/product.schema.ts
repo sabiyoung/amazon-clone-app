@@ -7,7 +7,7 @@ const productSchema = new Schema<Product>({
    price:{type: Number, required: true},
    image: {type: String, required: true},
     description: {type: String, required: true},
-    quantity:{type:Number, required:true},
+    quantity:{type:Number},
     rating: {type: String},
 });
 
