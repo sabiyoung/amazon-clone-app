@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Cart } from '../../../../../../shared/models/cart.model';
 import { Order } from '../../../../../../shared/models/order.model';
+import { Product } from '../../../../../../shared/models/products.model';
 
 export const loadOrder = createAction(
   '[Order] Load Orders'
@@ -18,7 +19,7 @@ export const loadOrderFailure = createAction(
 
 export const updateOrder = createAction(
   '[Order] Update Order',
-  props<{ data: Cart }>()
+  props<{ data: Cart}>()
 );
 
 export const updateOrderSuccess = createAction(

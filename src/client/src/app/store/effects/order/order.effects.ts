@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { OrderService } from 'src/app/services/order.service';
 import { loadCartFailure } from '../../actions/cart/cart.actions';
-import { loadOrder, loadOrderFailure, loadOrderSuccess, updateOrder, updateOrderFailure, updateOrderSuccess } from '../../actions/order/order.actions';
+import { loadOrder, loadOrderFailure, loadOrderSuccess, updateOrder, updateOrderFailure, updateOrderSuccess,  } from '../../actions/order/order.actions';
 
 
 
