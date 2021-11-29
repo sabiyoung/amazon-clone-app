@@ -1,0 +1,8 @@
+
+<div class="container" *ngIf="(cart$ | async) as cart">
+    <div class="col-md-4 mb-3 payment">
+      <button (click)="[checkout(cart.total_amount, cart)]"  class="btn btn-primary btn-block payment-button" >Place your order</button>
+    </div>
+</div>
+<div>
+</div>
