@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Product } from '../../../../../../shared/models/products.model';
+import { Rating } from '../../../../../../shared/models/rating.model';
 import { User } from '../../../../../../shared/models/user.model';
 
 export const loadProducts = createAction(
@@ -58,11 +59,31 @@ export const getTotalFailure = createAction(
   props<{ error: Error }>()
 );
 
-export const increaseQty = createAction(
-  '[Product] Increase Quantity',
 
-);
-export const decreaseQty = createAction(
-  '[Product] decrese Quantity',
+export const loadRating = createAction(
+  '[Product] Load Reating'
 );
 
+export const loadRatingSuccess = createAction(
+  '[Product] Load Reating Success',
+  props<{ data: Rating[] }>()
+);
+
+export const loadRatingFailure = createAction(
+  '[Product] Load Reating Failure',
+  props<{ error: Error }>()
+);
+
+export const createRating = createAction(
+  '[Product] Create Reating',
+  props<{data: Rating}>()
+);
+
+export const createRatingSuccess = createAction(
+  '[Product] Create Reating success',
+  props<{data: Rating}>()
+);
+export const createRatingFailure = createAction(
+  '[Product] Create Reating Failure',
+  props<{ error: Error }>()
+);

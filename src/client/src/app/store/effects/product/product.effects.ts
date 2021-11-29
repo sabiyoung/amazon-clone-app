@@ -10,9 +10,15 @@ import {
   createProducts,
   createProductsFailure,
   createProductsSuccess,
+  createRating,
+  createRatingFailure,
+  createRatingSuccess,
   loadProducts,
   loadProductsFailure,
   loadProductsSuccess,
+  loadRating,
+  loadRatingFailure,
+  loadRatingSuccess,
 } from '../../actions/product/product.actions';
 import { loginUserSuccess } from '../../actions/user/user.actions';
 
@@ -41,17 +47,29 @@ export class ProductEffects {
     )
   );
 
-  // loadSign$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(loadCartSuccess),
-  //     mergeMap(() =>
-  //       this.productService.getProducts().pipe(
-  //         map((data) => loadProductsSuccess({ data })),
-  //         catchError((error) => of(loadProductsFailure({ error })))
-  //       )
-  //     )
-  //   )
-  // );
+  loadRating$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadRating),
+      mergeMap(() =>
+        this.productService.getRatings().pipe(
+          map((data) => loadRatingSuccess({ data})),
+          catchError((error) => of(loadRatingFailure({ error })))
+        )
+      )
+    )
+  );
+  createReating$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createRating),
+      mergeMap((action) =>
+        this.productService.createRating(action.data).pipe(
+          map((data) => createRatingSuccess({ data })),
+          catchError((error) => of(createRatingFailure({ error })))
+        )
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private productService: ProductService,

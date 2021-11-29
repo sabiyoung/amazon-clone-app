@@ -1,6 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { Product } from '../../../../../../shared/models/products.model';
-import { AddToCart, createProductsSuccess, loadProductsSuccess, selectProductAction,  } from '../../actions/product/product.actions';
+import { Rating } from '../../../../../../shared/models/rating.model';
+import { AddToCart, createProductsSuccess, createRatingSuccess, loadProductsSuccess, loadRatingSuccess, selectProductAction,  } from '../../actions/product/product.actions';
 import { getTotal } from './../../actions/product/product.actions';
 
 
@@ -10,14 +11,14 @@ export interface State {
 products: Product[];
 selectedProduct: Product[]
 cart: Product[]
-quantity: number
+rating:Rating[]
 }
 
 export const initialState: State = {
 products: [],
 selectedProduct: [],
 cart: [],
-quantity: 1
+rating:[]
 };
 
 
@@ -26,10 +27,18 @@ export const reducer = createReducer(
 on(loadProductsSuccess, (state, action) => {
   return {...state, products: action.data}
 }),
+on(loadRatingSuccess, (state, action) => {
+  return {...state, rating: action.data}
+}),
 on(createProductsSuccess, (state, action) => {
   const products = [...state.products];
   products.push(action.data);
   return {...state, products}
+}),
+on(createRatingSuccess, (state, action) => {
+  const rating = [...state.rating];
+  rating.push(action.data);
+  return {...state, rating}
 }),
 on(selectProductAction, (state, action) => {
   const selectedProduct = [...state.selectedProduct];

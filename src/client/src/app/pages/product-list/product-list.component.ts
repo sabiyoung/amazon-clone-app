@@ -1,35 +1,47 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store';
-import { loadProducts, selectProductAction } from './../../store/actions/product/product.actions';
+import {
+  loadProducts,
+  loadRating,
+  selectProductAction,
+} from './../../store/actions/product/product.actions';
 import { Product } from './../../../../../shared/models/products.model';
 import { Observable } from 'rxjs';
-import { productsSelector } from 'src/app/store/selectors/product/product.selectors';
+import {
+  productsSelector,
+  ratingSelector,
+} from 'src/app/store/selectors/product/product.selectors';
 import { Router } from '@angular/router';
-
+import { Rating } from '../../../../../shared/models/rating.model';
+import { ProductService } from 'src/app/services/product.service';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
+  styleUrls: ['./product-list.component.scss'],
 })
 export class ProductListComponent implements OnInit {
-
   products$: Observable<Product[]>;
-
+  rating$: Observable<Rating[]>;
   constructor(
     private store: Store<AppState>,
-    private router: Router
+    private router: Router,
+    private productService: ProductService
   ) {
-    this.products$ = this.store.select(productsSelector)
+    this.products$ = this.store.select(productsSelector);
+    this.rating$ = this.store.select(ratingSelector);
   }
 
   ngOnInit(): void {
-    this.store.dispatch(loadProducts())
+    this.store.dispatch(loadProducts());
+    this.store.dispatch(loadRating());
   }
-productDetail(selectedProduct: Product) {
-  this.store.dispatch(selectProductAction({data:selectedProduct}))
-  this.router.navigate(['/product-detail'])
-}
+  productDetail(selectedProduct: Product) {
+    this.store.dispatch(selectProductAction({ data: selectedProduct }));
+    this.router.navigate(['/product-detail']);
+  }
 
-
+  goToReviews() {
+    this.router.navigate(['/rating']);
+  }
 }

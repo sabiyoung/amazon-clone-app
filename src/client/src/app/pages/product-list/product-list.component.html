@@ -1,16 +1,19 @@
 
-<div class="product">
-  <ul>
-    <li *ngFor="let product of products$ | async"  (click)="productDetail(product)">
-<span class="product_row">
-  <img src={{product.image}} alt="image">
+<div class="product " id="container" >
+
+    <mat-card *ngFor="let product of products$ | async"class="card" >
+
+<div class="product_row">
+  <img src={{product.image}} alt="image" (click)="productDetail(product)">
+  <app-rating></app-rating>
+   <!-- <span *ngIf="(rating$ | async) as rating" (click)="goToReviews()">{{rating.length}}rating</span> -->
   <span class="product_info">
     <p class="product_title">{{product.title}}</p>
   <strong class="product_price"> <small>$</small>{{product.price}}</strong>
- 
+
 </span>
-</span>
-    </li>
-  </ul>
+</div>
+    </mat-card>
+
 
 </div>
