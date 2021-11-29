@@ -6,7 +6,7 @@
       <div *ngIf="(cart.user) as user">
 
       <div *ngIf="(cart.items) as carts" >
-       <h1> {{carts.length === 0 ?  "Your Cart is empty." :  user.name + "'s Shopping Cart"}}</h1>
+       <h1> {{carts.length === 0 ?  "Your Cart is empty." :  ""}}</h1>
       </div>
     </div>
       <ng-container *ngFor="let item of cart.items">
