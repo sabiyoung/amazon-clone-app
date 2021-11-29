@@ -12,7 +12,7 @@ const cartSchema = new Schema<Cart>({
       quantity: Number,
     },
   ],
-});
+}, {timestamps:true});
 
 cartSchema.virtual("count").get(function (this: Cart) {
   return this.items.reduce((acc, item) =>acc + item.quantity,0 )
