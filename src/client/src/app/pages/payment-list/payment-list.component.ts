@@ -37,8 +37,8 @@ export class PaymentListComponent implements OnInit {
       locale: 'auto',
       token: (stripeToken: any) => {
         console.log(stripeToken);
-        alert('Payment was successfull');
-        this.goToHome();
+        alert('Payment was successful');
+    
         this.getOrders(product);
       },
     });
@@ -72,10 +72,9 @@ export class PaymentListComponent implements OnInit {
     }
   }
 
-  goToHome() {
-    this.router.navigate(['/']);
-  }
+
   getOrders(cart: Cart) {
     this.store.dispatch(updateOrder({ data: cart }));
+    this.router.navigate(['/']);
   }
 }
