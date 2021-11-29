@@ -1,10 +1,14 @@
-<h2>Add products</h2>
-<div>
-  <form [formGroup]= 'addProduct'>
-<input type="text" formControlName='title' placeholder="title"> <br>
-<input type="text" formControlName='price' placeholder="price"> <br>
-<input type="text" formControlName='image' placeholder="image url" > <br>
-<input type="text" formControlName='description' placeholder="description"> <br>
-<button (click)="addProducts()">add product</button>
-  </form>
+
+<div class="product">
+  <h2>Add products</h2>
+  <div class="product__container">
+    <form [formGroup]= 'addProduct'>
+  <input type="text" formControlName='title' placeholder="title"> <br>
+  <input type="text" formControlName='price' placeholder="price"> <br>
+  <input type="text" formControlName='image' placeholder="image url" > <br>
+  <input type="text" formControlName='description' placeholder="description"> <br>
+  <button class="product__button" (click)="addProducts()" [disabled]="addProduct.invalid">add product</button>
+    </form>
+  </div>
 </div>
+
