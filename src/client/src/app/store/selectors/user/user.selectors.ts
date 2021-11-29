@@ -9,6 +9,10 @@ export const usersSelector = createSelector(
 export const loggedInUserSelector = createSelector(
   userFeatureSelector,
   (state) =>{
-  return state.loggedInUser 
+  return state.loggedInUser
 }
+)
+export const adressSelector = createSelector(
+  userFeatureSelector,
+  (state) => state.adress
 )
