@@ -6,38 +6,33 @@ import { ProductService } from 'src/app/services/product.service';
 import { AppState } from 'src/app/store';
 import { addToCartSelector } from 'src/app/store/selectors/product/product.selectors';
 import { Product } from '../../../../../shared/models/products.model';
-import { getTotalSuccess } from 'src/app/store/actions/product/product.actions';
+import { Cart } from '../../../../../shared/models/cart.model';
+import { cartSelector } from 'src/app/store/selectors/cart/cart.selectors';
 
 @Component({
   selector: 'app-subtotal',
   templateUrl: './subtotal.component.html',
-  styleUrls: ['./subtotal.component.scss']
+  styleUrls: ['./subtotal.component.scss'],
 })
 export class SubtotalComponent implements OnInit {
   products$: Observable<Product[]>;
-products: Product[] = []
+
+  cart$!: Observable<Cart | null>;
   constructor(
     private store: Store<AppState>,
     private router: Router,
     private productService: ProductService
   ) {
-    this.products$ = this.store.select(addToCartSelector)
+    this.products$ = this.store.select(addToCartSelector);
+    this.cart$ = this.store.select(cartSelector);
   }
 
-  ngOnInit(): void {
- 
+  ngOnInit(): void {}
+
+  checkout() {
+    this.router.navigate(['checkout']);
   }
- 
-getAmount() {
-  let totalAmount = 0
-  this.products$.subscribe(products => this.products = products)
-  this.products.forEach(product => {
-    (product.price * product.quantity)
-totalAmount += product.price
-  })
-  return totalAmount
-}
-checkout() {
-  this.router.navigate(['/checkout'])
-}
+  getItems(product: Cart) {
+    return product.count! < 2 ? 'item' : 'items';
+  }
 }
