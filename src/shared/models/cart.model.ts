@@ -7,7 +7,7 @@ export interface Cart{
     items:{product:Product, quantity:number} [];
     count?:number;
     total_amount?: number;
-  
+
 
    
  
