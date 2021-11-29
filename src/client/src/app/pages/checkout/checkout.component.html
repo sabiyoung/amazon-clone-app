@@ -1,63 +1,68 @@
-
+<h2>Shipping Adress</h2>
+<hr />
 <div class="container">
-
-    <h1 *ngIf="products$ | async as carts">Checkout({{ carts.length}}{{carts.length <= 1  ? 'item' : "items"}})</h1>
-    <div class="wrapper">
-    <div class="payment__section">
-      <div class="payment__title">
-        <h3>Name</h3>
-      </div>
-      <div class="payment__address">
-        <p class="name">John</p>
-      </div>
-    </div>
-    <div class="payment__section">
-      <div class="payment__title">
-        <h3>Delivery Address</h3>
-      </div>
-      <div class="payment__address">
-        <p>12345 Sahara</p>
-        <p>Las Vegas, NV</p>
-      </div>
-    </div>
-
-    <!-- <div class="payment__section">
-      <div class="payment__title">
-        <h3>Billing Address</h3>
-      </div>
-      <div class="payment__address">
-        <p>12345 Sahara</p>
-        <p>Las Vegas, NV</p>
-      </div>
-    </div> -->
-
-    <div class="payment__section">
-      <div class="payment__title">
-        <h3>Review items and delivery</h3>
-      </div>
-
-  <div class="payment__address">
-   <ul>
-     <li *ngFor="let product of products$ | async">
-       <div class="checkout_products">
-       <div class="checkoutProduct__image"><img  src={{product.image}}/></div>
-      <div>
-        <p class="checkoutProduct__title">{{ product.title }}</p>
-        <p class="checkoutProduct__price">
-        <small>$</small>
-      <strong class="product_price">{{ product.price }}</strong>
-     </p>
-     <button class="delete_button" (click)="deleteFromCart(product)">
-      delete
-    </button>
-      </div>
-    </div>
-    <div>
-     <h3>Subtotal: <small>$</small>{{getAmount().toFixed(2)}}</h3>
-    </div>
-     </li>
-   </ul>
+  <div class="formContainer">
+    <form [formGroup]="addCustomer">
+      {{ getDate() }}
+      <label for="">First Name</label>
+      <input type="text" formControlName="firstName" />
+      <label for="">Last Name</label>
+      <input type="text" formControlName="lastName" />
+      <label for="">Addres Line 1</label>
+      <input type="text" formControlName="adressLineOne" />
+      <label for="">Adress Line 2 (Optional)</label>
+      <input
+        type="text"
+        formControlName="adressLineTwo"
+        placeholder="Apt, Suite, Bldg Floor, etc"
+      />
+      <label for="">ZIP Code</label>
+      <input type="text" formControlName="zipCode" />
+      <label for="">State</label>
+      <input type="text" formControlName="state" />
+      <label for="">City</label>
+      <input type="text" formControlName="city" />
+      <label for="">Phone Number</label>
+      <input type="text" formControlName="phoneNumber" /> <br />
+      <label for="">Email</label>
+      <input type="text" formControlName="email" /> <br />
+      <button (click)="addAdress()" class="continue">Continue</button>
+    </form>
   </div>
-</div>
-</div>
+
+  <div *ngIf="cart$ | async as cart" class="payment__address">
+    <mat-card *ngIf="cart.items as carts" class="checkout_products">
+      <div class="payment_button">
+        <app-payment-list></app-payment-list>
+
+        <p>
+          By placing your order, you agree to Amazon's privacy notice and
+          conditions of use.
+        </p>
+        <h3>Order Summary</h3>
+
+        <span class="shipping">
+          <p class="sub">Items:</p>
+          <p class="sub">${{ cart.total_amount!.toFixed(2) }}</p>
+        </span>
+        <span class="shipping">
+          <p>Shipping:</p>
+          <p>${{ shipping(cart) }}</p>
+        </span>
+        <span class="shipping">
+          <p>total before tax</p>
+          <p>${{ tatalBeforTax(cart)!.toFixed(2) }}</p>
+        </span>
+        <span class="shipping">
+          <p>Estmated tax</p>
+          <p>${{ taxCalculation(cart).toFixed(2) }}</p>
+        </span>
+        <hr />
+        <span class="order">
+          <h3>Order total</h3>
+          <h3>${{ tatalOrder(cart).toFixed(2) }}</h3></span
+        >
+      </div>
+    </mat-card>
+  </div>
 </div>
