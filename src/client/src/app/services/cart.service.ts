@@ -31,6 +31,10 @@ deleteProductFromCart(product: Product) {
   console.log('delete cart from cart', product)
   return this.api.put<Cart>('delete-from-cart/' +  product._id, product)
 }
+emptyCart(product:Cart) {
+  console.log('empty cart from cart', product)
+  return this.api.put<Cart>('empty-cart' +  product._id, product)
+}
 incrementQty(product: Cart) {
   return this.api.put<{data:Cart}>('increment-quantity/' + product._id, product );
 }
