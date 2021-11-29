@@ -94,8 +94,10 @@ app.post("/create-product", function (req, res) {
     });
 });
 
-app.post("/create-adress", function (req, res) {
+app.post("/create-adress",authHandler, function (req:any, res) {
+  const user = req.user._id
   const {
+    
     firstName,
     lastName,
     adressLineOne,
@@ -107,6 +109,7 @@ app.post("/create-adress", function (req, res) {
     email,
   } = req.body;
   const adress = new AdressModel({
+    user,
     firstName,
     lastName,
     adressLineOne,
@@ -130,8 +133,8 @@ app.post("/create-adress", function (req, res) {
     });
 });
 
-app.get("/adress", authHandler, function (req, res) {
-  AdressModel.find({ user: req.body.user })
+app.get("/adress", authHandler, function (req:any, res) {
+  AdressModel.find({ user: req.user._id })
     .then((data) => res.json({ data }))
     .catch((err) => {
       res.status(501);
@@ -312,9 +315,13 @@ app.get("/cart", authHandler, function (req: any, res) {
 });
 
 app.get("/order", authHandler, function (req: any, res) {
-  OrderModel.findOne({ user: req.user._id })
+  OrderModel.find({ user: req.user._id })
     .populate("items.product user")
-    .then((data) => res.json({ data }))
+    .populate({path:"items", populate:{path:"product"}})
+    .then((data) => {
+      console.log("Order from server", data) 
+      res.json({ data })})
+
     .catch((err) => {
       res.status(501);
       res.json({ errors: err });
@@ -322,27 +329,6 @@ app.get("/order", authHandler, function (req: any, res) {
 });
 
 app.post("/create-order", orderProcess.createOrder, orderProcess.emptyCart);
-// app.put("/update-cart",authHandler, function (req:any, res) {
-
-//   console.log("Login User", req.user)
-
-//   CartModel.findOneAndUpdate(
-//     {user:req.user._id},
-//     {
-//       $push: { items:req.body._id },
-//     },
-//     {
-//       new: true,
-//     },
-//     function (err, updateCart) {
-//       if (err) {
-//         res.send("Error updating cart");
-//       } else {
-//         res.json(updateCart);
-//       }
-//     }
-//   );
-// });
 
 app.post("/login", function (req, res) {
   console.log(req.body);
