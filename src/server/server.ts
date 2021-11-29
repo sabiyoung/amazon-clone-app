@@ -11,12 +11,41 @@ import dotenv from "dotenv";
 import { authHandler } from "./middleware/auth.middleware.js";
 import { CartModel } from "./schemas/cart.schema.js";
 import { OrderModel } from "./schemas/order.schema.js";
-
+import { RateModel } from "./schemas/rating.schema.js";
+import bodyParser from "body-parser";
+import Stripe from "stripe";
+import * as orderProcess from "./middleware/order.middleware.js";
+import { AdressModel } from "./schemas/adress.schema.js";
 const __dirname = path.resolve();
 dotenv.config();
 const access_secret = process.env.ACCESS_TOKEN_SECRET as string;
 const PORT = process.env.PORT || 3002;
 const app = express();
+const publishable = process.env.PUBLISHABLE_KEY;
+const secret = process.env.SECRETE_KEY!;
+export const stripe = new Stripe(secret, {
+  apiVersion: "2020-08-27",
+});
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.post("/create-payment", function (req, res) {
+  stripe.charges
+    .create({
+      amount: 7000,
+      description: "Web dev",
+      currency: "USD",
+      source: req.body.token,
+    })
+    .then((charge) => {
+      console.log(charge);
+      res.send("Success");
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
 
 const saltRounds = 10;
 
@@ -44,20 +73,95 @@ app.get("/", function (req, res) {
 app.use(express.json());
 
 app.post("/create-product", function (req, res) {
-  const { title, price, image, description } = req.body;
+  const { title, price, image, description, rating } = req.body;
   const product = new ProductModel({
     price,
     title,
     image,
     description,
+    rating,
   });
   product
     .save()
     .then((data) => {
       res.json({ data });
     })
+
     .catch((err) => {
       console.log(err);
+      res.status(501);
+      res.json({ errors: err });
+    });
+});
+
+app.post("/create-adress", function (req, res) {
+  const {
+    firstName,
+    lastName,
+    adressLineOne,
+    adressLineTwo,
+    zipCode,
+    state,
+    city,
+    phoneNumber,
+    email,
+  } = req.body;
+  const adress = new AdressModel({
+    firstName,
+    lastName,
+    adressLineOne,
+    adressLineTwo,
+    zipCode,
+    state,
+    city,
+    phoneNumber,
+    email,
+  });
+  adress
+    .save()
+    .then((data) => {
+      res.json({ data });
+    })
+
+    .catch((err) => {
+      console.log(err);
+      res.status(501);
+      res.json({ errors: err });
+    });
+});
+
+app.get("/adress", authHandler, function (req, res) {
+  AdressModel.find({ user: req.body.user })
+    .then((data) => res.json({ data }))
+    .catch((err) => {
+      res.status(501);
+      res.json({ errors: err });
+    });
+});
+
+app.post("/create-rating", function (req: any, res) {
+  const { comment, product, rating } = req.body;
+  const newRating = new RateModel({
+    comment,
+    rating,
+  });
+
+  newRating
+    .save()
+    .then((data) => {
+      res.json({ data });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(501);
+      res.json({ errors: err });
+    });
+});
+
+app.get("/rating", function (req, res) {
+  RateModel.find()
+    .then((data) => res.json({ data }))
+    .catch((err) => {
       res.status(501);
       res.json({ errors: err });
     });
@@ -92,13 +196,7 @@ app.post("/create-user", function (req, res) {
           });
           cart.save();
         })
-        .then(() => {
-          const order = new OrderModel({
-            user: new_user._id,
-            items: req.body.items,
-          });
-          order.save();
-        })
+
         .catch((err) => {
           console.log(err);
           res.status(501);
@@ -121,7 +219,7 @@ app.put("/delete-from-cart/:id", authHandler, function (req: any, res) {
   CartModel.findOneAndUpdate(
     { user: req.user._id },
     {
-      $pull: { items: req.params.id },
+      $pull: { items: { product: req.params.id } },
     },
     {
       new: true,
@@ -134,7 +232,7 @@ app.put("/delete-from-cart/:id", authHandler, function (req: any, res) {
         console.log("deleted prodct", deleteFromCart);
       }
     }
-  ).populate("items");
+  ).populate("items.product");
 });
 
 app.put("/update-user/:id", function (req, res) {
@@ -158,57 +256,54 @@ app.put("/update-user/:id", function (req, res) {
 });
 
 app.put("/update-cart", authHandler, function (req: any, res) {
-  CartModel.findOne(
-    {user:req.user._id},
-  
-  ).populate('items.product').then(cart => {
-    console.log(cart, "Cart")
-    if(cart) {
-      console.log(req.body, req.body._id, cart.items[0])
-      const item = cart.items.find(item => item.product._id == req.body._id)
-      console.log(item, "item")
-     if(item) {
-       item.quantity++
-     } else {
-       cart.items.push({product:req.body._id, quantity:1})
-     }
-     cart.save()
-     .then(updatedCart => res.json(cart))
-    }
-
-  })
-   
+  CartModel.findOne({ user: req.user._id })
+    .populate("items.product")
+    .then((cart) => {
+      console.log(cart, "Cart");
+      if (cart) {
+        console.log(req.body, req.body._id, cart.items[0]);
+        const item = cart.items.find(
+          (item) => item.product._id == req.body._id
+        );
+        console.log(item, "item");
+        if (item) {
+          item.quantity++;
+        } else {
+          cart.items.push({ product: req.body._id, quantity: 1 });
+        }
+        cart.save().then((updatedCart) => res.json(cart));
+      }
+    });
 });
 
-app.put("/remove-cart-item",authHandler, function (req:any, res) {
-  console.log("remove from cart Cart", req.user)
-  CartModel.findOne(
-    {user:req.user._id},
-  
-  ).then(cart => {
-    if(cart) {
-      const item = cart.items.find(item => item.product == req.body._id)
-     if(item) {
-       item.quantity--;
-       if(item.quantity <1){
-         cart.items.splice(cart.items.findIndex(ii => ii == item ),1)
-       }
-     }
-   cart?.save().then((updatedCart)=> {
-  CartModel.populate(updatedCart, "items.product").then((populatedCart)=> {
-    res.json(populatedCart)
-   })
- })  
+app.put("/remove-cart-item", authHandler, function (req: any, res) {
+  console.log("remove from cart Cart", req.user);
+  CartModel.findOne({ user: req.user._id }).then((cart) => {
+    if (cart) {
+      const item = cart.items.find((item) => item.product == req.body._id);
+      if (item) {
+        item.quantity--;
+        if (item.quantity < 1) {
+          cart.items.splice(
+            cart.items.findIndex((ii) => ii == item),
+            1
+          );
+        }
+      }
+      cart?.save().then((updatedCart) => {
+        CartModel.populate(updatedCart, "items.product").then(
+          (populatedCart) => {
+            res.json(populatedCart);
+          }
+        );
+      });
     }
-  })
+  });
 });
-
 
 app.get("/cart", authHandler, function (req: any, res) {
-  CartModel.findOne( 
-    {user:req.user._id}
-  ).populate('items.product')
-  .populate('user')
+  CartModel.findOne({ user: req.user._id })
+    .populate("items.product user")
     .then((data) => res.json({ data }))
     .catch((err) => {
       res.status(501);
@@ -216,38 +311,38 @@ app.get("/cart", authHandler, function (req: any, res) {
     });
 });
 
-
-app.put("/update-order", authHandler, function (req: any, res) {
-  console.log("Update Order", req.user);
-  console.log(req.body);
-  OrderModel.findOneAndUpdate(
-    { user: req.user._id },
-    {
-      $push: { items: req.body._id },
-    },
-    {
-      new: true,
-    },
-    function (err, updateOrder) {
-      if (err) {
-        res.send("Error updating order");
-      } else {
-        res.json(updateOrder);
-      }
-    }
-  );
-});
-//addToSet
 app.get("/order", authHandler, function (req: any, res) {
   OrderModel.findOne({ user: req.user._id })
-    .populate("items")
-    .populate("user")
+    .populate("items.product user")
     .then((data) => res.json({ data }))
     .catch((err) => {
       res.status(501);
       res.json({ errors: err });
     });
 });
+
+app.post("/create-order", orderProcess.createOrder, orderProcess.emptyCart);
+// app.put("/update-cart",authHandler, function (req:any, res) {
+
+//   console.log("Login User", req.user)
+
+//   CartModel.findOneAndUpdate(
+//     {user:req.user._id},
+//     {
+//       $push: { items:req.body._id },
+//     },
+//     {
+//       new: true,
+//     },
+//     function (err, updateCart) {
+//       if (err) {
+//         res.send("Error updating cart");
+//       } else {
+//         res.json(updateCart);
+//       }
+//     }
+//   );
+// });
 
 app.post("/login", function (req, res) {
   console.log(req.body);
@@ -269,6 +364,7 @@ app.post("/login", function (req, res) {
         }
       });
     })
+
     .catch((err) => {
       return res.sendStatus(404);
     });
