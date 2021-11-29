@@ -5,10 +5,9 @@ import type { User } from './user.model.js';
 export interface Order{
     _id: string;
     user?: User;
-    items?:Product[];
-   total_price?: number;
-   item_count?: number;
-   quantity?:number
+    items:{product:Product, quantity:number} [];
+    total_amount?: number;
+   count?: number;
 
    
 }
