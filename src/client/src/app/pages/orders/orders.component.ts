@@ -13,7 +13,7 @@ import { loadOrder } from 'src/app/store/actions/order/order.actions';
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit {
-orders$:Observable<Order | null>
+orders$:Observable<Order [] | null>
   constructor(
     private store: Store<AppState>,
     private router: Router

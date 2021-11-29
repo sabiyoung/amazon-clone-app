@@ -9,7 +9,7 @@ export const loadOrder = createAction(
 
 export const loadOrderSuccess = createAction(
   '[Order] Load Orders Success',
-  props<{ data: Order}>()
+  props<{ data: Order[]}>()
 );
 
 export const loadOrderFailure = createAction(

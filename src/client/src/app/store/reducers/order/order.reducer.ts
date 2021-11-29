@@ -5,11 +5,13 @@ import { Order } from './../../../../../../shared/models/order.model';
 export const orderFeatureKey = 'order';
 
 export interface State {
-orders:Order | null
+orders:Order[] | null
+order:Order | null
 }
 
 export const initialState: State = {
-orders: null
+orders:[],
+order:null
 };
 
 
@@ -19,7 +21,7 @@ export const reducer = createReducer(
     return { ...state, orders: action.data };
   }),
   on(updateOrderSuccess, (state, action) => {
-    return { ...state, orders:action.data};
+    return { ...state, order:action.data};
   }),
 );
 

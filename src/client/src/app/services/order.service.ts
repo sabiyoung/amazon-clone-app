@@ -11,8 +11,8 @@ import { ApiService } from './api.service';
 export class OrderService {
 
   constructor(  private api: ApiService) { }
-  getOrder() {
-    return this.api.get<{ data: Order }>('order').pipe(map((res) => res.data));
+  getOrders() {
+    return this.api.get<{ data: Order[] }>('order').pipe(map((res) => res.data));
   }
 updateOrder(cart: Cart) {
     console.log("service create service cart")

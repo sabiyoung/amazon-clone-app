@@ -3,7 +3,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { OrderService } from 'src/app/services/order.service';
-import { loadCartFailure } from '../../actions/cart/cart.actions';
 import { loadOrder, loadOrderFailure, loadOrderSuccess, updateOrder, updateOrderFailure, updateOrderSuccess,  } from '../../actions/order/order.actions';
 
 
@@ -14,7 +13,7 @@ export class OrderEffects {
     this.actions$.pipe(
       ofType(loadOrder),
       mergeMap(() =>
-        this.orderService.getOrder().pipe(
+        this.orderService.getOrders().pipe(
         map((data) => loadOrderSuccess({data})),
           catchError((error) => of(loadOrderFailure({ error })))
         )
