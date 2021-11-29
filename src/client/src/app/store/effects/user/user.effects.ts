@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 import { UserService } from 'src/app/services/user.service';
-import { loadUsers, loadUsersSuccess, loadUsersFailure, createUser, createUserSuccess, createUserFailure, loginUser, loginUserFailure, loginUserSuccess, loginNavigateSuccess, logoutUserSuccess, logoutUser, logoutUserFailure } from '../../actions/user/user.actions';
+import { loadUsers, loadUsersSuccess, loadUsersFailure, createUser, createUserSuccess, createUserFailure, loginUser, loginUserFailure, loginUserSuccess, loginNavigateSuccess, logoutUserSuccess, logoutUser, logoutUserFailure, loadAdress, loadAdressSuccess, loadAdressFailure, createAdress, createAdressSuccess, createAdressFailure } from '../../actions/user/user.actions';
 
 
 
@@ -65,17 +65,29 @@ this.actions$.pipe(
   )
 )
 );
-// updateUsers$ = createEffect(() =>
-// this.actions$.pipe(
-//   ofType(updateUser),
-//   mergeMap((action) =>
-//     this.userService.updateUser(action.data).pipe(
-//       map((data) => updateUserSuccess({ data })),
-//       catchError((error) => of(updateUserFailure({ error })))
-//     )
-//   )
-// )
-// );
+
+loadAdress$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadAdress),
+      mergeMap(() =>
+        this.userService.getAdress().pipe(
+          map((data) => loadAdressSuccess({ data })),
+          catchError((error) => of(loadAdressFailure({ error })))
+        )
+      )
+    )
+  );
+  createAdress$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(createAdress),
+    mergeMap((action) =>
+      this.userService.createAdress(action.data).pipe(
+        map((data) => createAdressSuccess({ data })),
+        catchError((error) => of(createAdressFailure({ error })))
+      )
+    )
+  )
+);
 
 constructor(
   private actions$: Actions,

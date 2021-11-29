@@ -1,8 +1,9 @@
 import { createAction, props } from '@ngrx/store';
+import { Adress } from '../../../../../../shared/models/adress.model';
 import { User } from '../../../../../../shared/models/user.model';
 
 export const loadUsers = createAction(
-  '[Product] Load Users'
+  '[User] Load Users'
 );
 export const loadUsersSuccess = createAction(
   '[User] Load Users Success',
@@ -57,16 +58,30 @@ export const logoutNavigateSuccess = createAction(
   '[User]  logout navivage success',
 );
 
-// export const updateUser = createAction(
-//   '[User] Update User',
-//   props<{data: User}>()
-// );
-// export const updateUserSuccess = createAction(
-//   '[User] Update User Success',
-//   props<{ data: User }>()
-// );
+export const loadAdress = createAction(
+  '[User] Load Adress'
+);
+export const loadAdressSuccess = createAction(
+  '[User] Load  Adress Success',
+  props<{ data: Adress[] }>()
+);
 
-// export const updateUserFailure = createAction(
-//   '[User] Update User Failure',
-//   props<{ error: Error }>()
-// );
+export const loadAdressFailure = createAction(
+  '[User] Load  Adress Failure',
+  props<{ error: Error }>()
+);
+
+export const createAdress = createAction(
+  '[User] Create  Adress',
+  props<{data: Adress}>()
+);
+
+export const createAdressSuccess = createAction(
+  '[User] Creat Adress Success',
+  props<{ data: Adress }>()
+);
+
+export const createAdressFailure = createAction(
+  '[User] Create Adress Failure',
+  props<{ error: Error }>()
+);
