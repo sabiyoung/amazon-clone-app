@@ -39,6 +39,7 @@ import {TextFieldModule} from '@angular/cdk/text-field';
 import { NgxStripeModule } from 'ngx-stripe';
 
 import { AdressListComponent } from './pages/adress-list/adress-list.component';
+import { FilterPipe } from './pipe/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { AdressListComponent } from './pages/adress-list/adress-list.component';
      RatingListComponent,
      PaymentListComponent,
      AdressListComponent,
+     FilterPipe,
 
   ],
   imports: [

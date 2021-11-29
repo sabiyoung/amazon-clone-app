@@ -23,6 +23,10 @@ import { ProductService } from 'src/app/services/product.service';
 export class ProductListComponent implements OnInit {
   products$: Observable<Product[]>;
   rating$: Observable<Rating[]>;
+  public filterCategory: any;
+  public product:any
+  searchkey: string = "";
+
   constructor(
     private store: Store<AppState>,
     private router: Router,
@@ -30,11 +34,19 @@ export class ProductListComponent implements OnInit {
   ) {
     this.products$ = this.store.select(productsSelector);
     this.rating$ = this.store.select(ratingSelector);
-  }
+  
+  };
 
   ngOnInit(): void {
     this.store.dispatch(loadProducts());
     this.store.dispatch(loadRating());
+    this.productService.getProducts().subscribe((res) => {
+      this.product = res;
+    this.filterCategory = res;
+    })
+    this.productService.search.subscribe((val: any) => {
+      this.searchkey = val;
+    })
   }
   productDetail(selectedProduct: Product) {
     this.store.dispatch(selectProductAction({ data: selectedProduct }));
@@ -44,4 +56,13 @@ export class ProductListComponent implements OnInit {
   goToReviews() {
     this.router.navigate(['/rating']);
   }
+  filter(category: string) {
+    this.filterCategory = this.product
+      .filter((product: any) => {
+        if (product.category == category || category == '') {
+          return product;
+        }
+      })
+  }
+
 }

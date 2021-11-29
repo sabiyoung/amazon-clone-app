@@ -34,6 +34,7 @@ export class HeaderComponent implements OnInit {
     this.cart$ = this.store.select(cartSelector);
     this.users$ = this.store.select(usersSelector);
     this.isAuthenticated$ = this.store.select(loggedInUserSelector);
+    this.getProducts()
   }
 
   ngOnInit(): void {}
@@ -52,12 +53,16 @@ export class HeaderComponent implements OnInit {
   account() {
     this.router.navigate(['/user-account']);
   }
+
   getProducts() {
-    this.productService.filterProduct(this.searchTerm);
+    return this.productService.filter(this.searchTerm);
   }
-  searchProducts(event: any) {
+
+  search(event: any) {
     this.searchTerm = (event.target as HTMLInputElement).value;
     console.log(this.searchTerm);
     this.productService.search.next(this.searchTerm);
   }
+
+
 }

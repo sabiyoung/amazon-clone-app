@@ -13,16 +13,16 @@ import { productsSelector } from '../store/selectors/product/product.selectors';
 })
 export class ProductService {
   selectedProductId = '';
-  getCartTotal: Product[] = [];
+  public product = new BehaviorSubject<any>([])
+  public search = new BehaviorSubject<string>("");
+
   public products: Product[] = [];
   products$: Observable<Product[]>;
-  filteredProducts: any;
-  public search = new BehaviorSubject<string>('');
+
 
   constructor(private api: ApiService, private store: Store<AppState>) {
     this.products$ = this.store.select(productsSelector);
-    this.filterProduct();
-    console.log(this.products$);
+
   }
 
   createProduct(product: Product) {
@@ -49,14 +49,10 @@ export class ProductService {
   selectProduct(id: string) {
     this.selectedProductId = id;
   }
+  filter(title: string) {
+    return this.products$.subscribe(product => product.filter((product) => product.title.includes(title)))
 
-  filterProduct(search?: string): any {
-    if (!search) {
-      this.filteredProducts = this.products$;
-    } else {
-      this.filteredProducts = this.products.filter((product) =>
-        product.title.toLowerCase().includes(search.toLowerCase())
-      );
-    }
   }
+
+
 }

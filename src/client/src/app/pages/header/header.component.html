@@ -12,7 +12,9 @@
         ><input
           type="text"
           [(ngModel)]="searchTerm"
-          (keyup)="searchProducts($event)"
+          (keyup)="search($event)"
+          placeholder="search"
+
       /></span>
       <span> <mat-icon class="searchIcon">search</mat-icon> </span>
     </div>
