@@ -1,54 +1,68 @@
-
 <div>
-<div class="container">
-  <div>
-    <img (click)="home()" src="https://www.pikpng.com/pngl/b/327-3272114_amazon-de-marketplace-amazon-logo-on-black-clipart.png" alt="">
-  </div>
-  <div class="searchInput">
-<span>    <input type="text"></span>
- <span>   <mat-icon class="searchIcon">search</mat-icon>
- </span>
-  </div>
- 
-<ul>
-  <li routerLinkActive="active-li"  class="sign-in" *ngIf="!(isAuthenticated$ | async) ">
-    <a routerLink="/sign-in">
-      <div>
-        <span class="username">Hello, Guest</span> <br>
-       <span class="signout"> Sign-in</span>
-      </div>
-
-      </a>
-  </li>
-  <li  class="sign-in" *ngIf="(isAuthenticated$ | async) as users">
-    <a routerLink="/sign-in" (click)="signout()">
-      <div >
-       <span class="username"> Hello, {{users.name}}</span> <br>
-      <span class="signout">  Sign-out</span>
-      </div>
-
-      </a>
-  </li>
-</ul>
-
-
-<a routerLink="/orders">
-  <div class="orders" >
-    <p>Returns</p>
-    <h4>& Orders</h4>
-  </div>
-</a>
-
-
-<a routerLink="/cart">
-  <div class="new-cart">
-    <div id="cart-number" *ngIf="(cart$ | async ) as cart">
-      <span >{{cart.count}}</span>
+  <div class="container">
+    <div>
+      <img
+        (click)="home()"
+        src="https://www.pikpng.com/pngl/b/327-3272114_amazon-de-marketplace-amazon-logo-on-black-clipart.png"
+        alt=""
+      />
     </div>
-      <div id="cartIcon" > <i style="font-size: 30px"  class="fas fa-cart-plus"></i><span class="cart-text">cart</span></div>
+    <div class="searchInput">
+      <span
+        ><input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (keyup)="searchProducts($event)"
+      /></span>
+      <span> <mat-icon class="searchIcon">search</mat-icon> </span>
+    </div>
 
+    <ul>
+      <li
+        routerLinkActive="active-li"
+        class="sign-in"
+        *ngIf="!(isAuthenticated$ | async)"
+      >
+        <a routerLink="/sign-in">
+          <div>
+            <span class="username">Hello, Guest</span> <br />
+            <span class="signout"> Sign-in</span>
+          </div>
+        </a>
+      </li>
+      <li class="sign-in" *ngIf="isAuthenticated$ | async as users">
+        <a routerLink="/sign-in" (click)="signout()">
+          <div>
+            <span class="username"> Hello, {{ users.name }}</span> <br />
+            <span class="signout"> Sign-out</span>
+          </div>
+        </a>
+      </li>
+    </ul>
+
+    <a routerLink="/orders" (click)="account()">
+      <div class="orders">
+        <p>Account</p>
+        <h4>& List</h4>
+      </div>
+    </a>
+    <a routerLink="/orders">
+      <div class="orders">
+        <p>Returns</p>
+        <h4>& Orders</h4>
+      </div>
+    </a>
+
+    <a routerLink="/cart">
+      <div class="new-cart">
+        <div id="cart-number" *ngIf="cart$ | async as cart">
+          <span>{{ cart.count }}</span>
+        </div>
+        <div id="cartIcon">
+          <i style="font-size: 30px" class="fas fa-cart-plus"></i
+          ><span class="cart-text">cart</span>
+        </div>
+      </div>
+    </a>
   </div>
-</a>
-
-
 </div>
