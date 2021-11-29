@@ -21,3 +21,7 @@ export const cartSelector = createSelector(
   (state) => state.cart
 )
 
+export const ratingSelector = createSelector(
+  productsFeatureSelector,
+  (state) => state.rating
+)
