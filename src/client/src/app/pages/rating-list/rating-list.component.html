@@ -1,0 +1,15 @@
+
+<h2>Customer Reviews</h2>
+<div>
+  <form [formGroup]= 'addRating'>
+<input type="text" formControlName='comment' placeholder="comment"> <br>
+
+<button (click)="addRatings()" >comment here</button>
+  </form>
+</div>
+<div class="" *ngIf="( rating$ | async)as rating">
+  {{rating.length}}
+<div *ngFor="let rate of rating$ | async">
+{{rate.comment}}
+</div>
+</div>
