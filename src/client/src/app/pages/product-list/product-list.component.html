@@ -1,7 +1,8 @@
 
 <div class="product " id="container" >
 
-    <mat-card *ngFor="let product of products$ | async"class="card" >
+    <mat-card *ngFor="let product of filterCategory | filter:searchkey:'title'
+    "class="card" >
 
 <div class="product_row">
   <img src={{product.image}} alt="image" (click)="productDetail(product)">
