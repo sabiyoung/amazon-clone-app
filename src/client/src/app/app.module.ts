@@ -13,10 +13,8 @@ import * as fromProduct from './store/reducers/product/product.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ProductEffects } from './store/effects/product/product.effects';
 import { ProductListComponent } from './pages/product-list/product-list.component';
-import { HomePageComponent } from './pages/home-page/home-page.component';
 import { NavigationComponent } from './pages/navigation/navigation.component';
 import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
-
 import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
 import { CartComponent } from './pages/cart/cart.component';
@@ -27,7 +25,6 @@ import { UserEffects } from './store/effects/user/user.effects';
 import * as fromUser from './store/reducers/user/user.reducer';
 import { LoginComponent } from './pages/login/login.component';
 import { DecimalPipe } from '@angular/common';
-
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import * as fromCart from './store/reducers/cart/cart.reducer';
@@ -48,7 +45,6 @@ import { AdressListComponent } from './pages/adress-list/adress-list.component';
     AppComponent,
     AddProductComponent,
     ProductListComponent,
-    HomePageComponent,
     NavigationComponent,
     ProductDetailComponent,
     CartComponent,
@@ -61,7 +57,6 @@ import { AdressListComponent } from './pages/adress-list/adress-list.component';
      RatingComponent,
      RatingListComponent,
      PaymentListComponent,
-
      AdressListComponent,
 
   ],
