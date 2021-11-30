@@ -2,6 +2,7 @@
   "name": "socket_starter",
   "version": "1.0.0",
   "type": "module",
+  "engines": {"npm":"7.21.1","node":"14.15.4"},
   "scripts": {
     "start": "node dist/server/server.js",
     "dev-server": "concurrently npm:dev-server:*",
