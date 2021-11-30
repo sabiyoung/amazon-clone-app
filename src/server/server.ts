@@ -19,7 +19,8 @@ import { AdressModel } from "./schemas/adress.schema.js";
 const __dirname = path.resolve();
 dotenv.config();
 const access_secret = process.env.ACCESS_TOKEN_SECRET as string;
-const PORT = process.env.PORT || 3002;
+
+const PORT = process.env.PORT || 5000;
 const app = express();
 const publishable = process.env.PUBLISHABLE_KEY;
 const secret = process.env.SECRETE_KEY!;
@@ -50,7 +51,7 @@ app.post("/create-payment", function (req, res) {
 const saltRounds = 10;
 
 mongoose
-  .connect("mongodb://localhost:27017/amazon-clone2")
+  .connect(`${process.env.MONGO_URL}`)
   .then(() => {
     console.log("Connected to DB Successfully");
   })
@@ -67,12 +68,9 @@ app.use(
   })
 );
 app.use(express.json());
-app.get("/", function (req, res) {
-  res.json({ test: "test" });
-});
-app.use(express.json());
 
-app.post("/create-product", function (req, res) {
+
+app.post("/api/create-product", function (req, res) {
   const { title, price, image, description, rating } = req.body;
   const product = new ProductModel({
     price,
@@ -94,7 +92,7 @@ app.post("/create-product", function (req, res) {
     });
 });
 
-app.post("/create-adress",authHandler, function (req:any, res) {
+app.post("/api/create-adress",authHandler, function (req:any, res) {
   const user = req.user._id
   const {
     
@@ -133,7 +131,7 @@ app.post("/create-adress",authHandler, function (req:any, res) {
     });
 });
 
-app.get("/adress", authHandler, function (req:any, res) {
+app.get("/api/adress", authHandler, function (req:any, res) {
   AdressModel.find({ user: req.user._id })
     .then((data) => res.json({ data }))
     .catch((err) => {
@@ -142,7 +140,7 @@ app.get("/adress", authHandler, function (req:any, res) {
     });
 });
 
-app.post("/create-rating", function (req: any, res) {
+app.post("/api/create-rating", function (req: any, res) {
   const { comment, product, rating } = req.body;
   const newRating = new RateModel({
     comment,
@@ -161,7 +159,7 @@ app.post("/create-rating", function (req: any, res) {
     });
 });
 
-app.get("/rating", function (req, res) {
+app.get("/api/rating", function (req, res) {
   RateModel.find()
     .then((data) => res.json({ data }))
     .catch((err) => {
@@ -170,7 +168,7 @@ app.get("/rating", function (req, res) {
     });
 });
 
-app.get("/products", function (req, res) {
+app.get("/api/products", function (req, res) {
   ProductModel.find()
     .then((data) => res.json({ data }))
     .catch((err) => {
@@ -178,7 +176,7 @@ app.get("/products", function (req, res) {
       res.json({ errors: err });
     });
 });
-app.post("/create-user", function (req, res) {
+app.post("/api/create-user", function (req, res) {
   const { name, email, username, password } = req.body;
   bcrypt.genSalt(saltRounds, function (err, salt) {
     bcrypt.hash(password, salt, function (error, hash) {
@@ -208,7 +206,7 @@ app.post("/create-user", function (req, res) {
     });
   });
 });
-app.get("/users", authHandler, function (req: any, res) {
+app.get("/api/users", authHandler, function (req: any, res) {
   UserModel.find({ email: req.user.email }, "-password")
     .then((data) => res.json({ data }))
     .catch((err) => {
@@ -217,7 +215,7 @@ app.get("/users", authHandler, function (req: any, res) {
     });
 });
 
-app.put("/delete-from-cart/:id", authHandler, function (req: any, res) {
+app.put("/api/delete-from-cart/:id", authHandler, function (req: any, res) {
   console.log("Delete product from cart");
   CartModel.findOneAndUpdate(
     { user: req.user._id },
@@ -238,27 +236,27 @@ app.put("/delete-from-cart/:id", authHandler, function (req: any, res) {
   ).populate("items.product");
 });
 
-app.put("/update-user/:id", function (req, res) {
-  console.log("Update user");
-  UserModel.findByIdAndUpdate(
-    req.params.id,
-    {
-      $set: { name: req.body.name, email: req.body.email },
-    },
-    {
-      new: true,
-    },
-    function (err, updateUser) {
-      if (err) {
-        res.send("Error updating user");
-      } else {
-        res.json(updateUser);
-      }
-    }
-  );
-});
+// app.put("/update-user/:id", function (req, res) {
+//   console.log("Update user");
+//   UserModel.findByIdAndUpdate(
+//     req.params.id,
+//     {
+//       $set: { name: req.body.name, email: req.body.email },
+//     },
+//     {
+//       new: true,
+//     },
+//     function (err, updateUser) {
+//       if (err) {
+//         res.send("Error updating user");
+//       } else {
+//         res.json(updateUser);
+//       }
+//     }
+//   );
+// });
 
-app.put("/update-cart", authHandler, function (req: any, res) {
+app.put("/api/update-cart", authHandler, function (req: any, res) {
   CartModel.findOne({ user: req.user._id })
     .populate("items.product")
     .then((cart) => {
@@ -279,7 +277,7 @@ app.put("/update-cart", authHandler, function (req: any, res) {
     });
 });
 
-app.put("/remove-cart-item", authHandler, function (req: any, res) {
+app.put("/api/remove-cart-item", authHandler, function (req: any, res) {
   console.log("remove from cart Cart", req.user);
   CartModel.findOne({ user: req.user._id }).then((cart) => {
     if (cart) {
@@ -304,7 +302,7 @@ app.put("/remove-cart-item", authHandler, function (req: any, res) {
   });
 });
 
-app.get("/cart", authHandler, function (req: any, res) {
+app.get("/api/cart", authHandler, function (req: any, res) {
   CartModel.findOne({ user: req.user._id })
     .populate("items.product user")
     .then((data) => res.json({ data }))
@@ -314,7 +312,7 @@ app.get("/cart", authHandler, function (req: any, res) {
     });
 });
 
-app.get("/order", authHandler, function (req: any, res) {
+app.get("/api/order", authHandler, function (req: any, res) {
   OrderModel.find({ user: req.user._id })
     .populate("items.product user")
     .populate({path:"items", populate:{path:"product"}})
@@ -328,9 +326,9 @@ app.get("/order", authHandler, function (req: any, res) {
     });
 });
 
-app.post("/create-order", orderProcess.createOrder, orderProcess.emptyCart);
+app.post("/api/create-order", orderProcess.createOrder, orderProcess.emptyCart);
 
-app.post("/login", function (req, res) {
+app.post("/api/login", function (req, res) {
   console.log(req.body);
   const { email, password } = req.body;
 
@@ -355,13 +353,26 @@ app.post("/login", function (req, res) {
       return res.sendStatus(404);
     });
 });
-app.get("/logout", authHandler, function (req, res) {
+app.get("/api/logout", authHandler, function (req, res) {
   res.cookie("jwt", "", {
     httpOnly: true,
     maxAge: 0,
   });
   res.json({ message: "Successfully Logged out" });
 });
+
+app.all("/api/*", function (req, res) {
+  res.sendStatus(404);
+});
+
+const clientPath = path.join(__dirname, '/dist/client');
+app.use(express.static(clientPath));
+app.get("*", function (req, res) {
+  const filePath = path.join(__dirname, '/dist/client/index.html');
+  console.log(filePath);
+  res.sendFile(filePath);
+});
+
 app.listen(PORT, function () {
   console.log(`running at localhost http://localhost:${PORT}`);
 });
