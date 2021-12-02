@@ -14,7 +14,7 @@ export interface State {
 
 export const initialState: State = {
   users: [],
-  loggedInUser: JSON.parse(localStorage.getItem('token') || '{}'),
+  loggedInUser: JSON.parse(localStorage.getItem('token') || '{}'), 
   adress:[]
 };
 
@@ -40,7 +40,6 @@ export const reducer = createReducer(
   }),
 on(loginUserSuccess, (state, action) => {
   localStorage.setItem('token', JSON.stringify(action.data))
-
   return { ...state, loggedInUser: action.data };
 }),
 on(logoutUserSuccess, (state, action) => {
