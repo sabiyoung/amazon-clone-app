@@ -82,7 +82,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   shipping(cart: Cart) {
-    return cart.total_amount! <= 25 ? cart.total_amount! / 10 : 'Free';
+    return cart.total_amount! <= 25 ? '$' +cart.total_amount! / 10 : 'Free';
   }
 
   taxCalculation(cart: Cart) {
