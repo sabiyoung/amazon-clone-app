@@ -1,20 +1,18 @@
 
 <div class="product " id="container" >
 
-    <mat-card *ngFor="let product of filterCategory | filter:searchkey:'title'
+    <div *ngFor="let product of filterCategory | filter:searchkey:'title'
     "class="card" >
 
 <div class="product_row">
-  <img src={{product.image}} alt="image" (click)="productDetail(product)">
+  <img src={{product.image}} alt="image" >
   <app-rating></app-rating>
    <!-- <span *ngIf="(rating$ | async) as rating" (click)="goToReviews()">{{rating.length}}rating</span> -->
   <span class="product_info">
-    <p class="product_title">{{product.title}}</p>
+    <p class="product_title" (click)="productDetail(product)">{{product.title}}</p>
   <strong class="product_price"> <small>$</small>{{product.price}}</strong>
 
 </span>
 </div>
-    </mat-card>
-
-
+    </div>
 </div>

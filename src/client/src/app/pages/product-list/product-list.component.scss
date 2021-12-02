@@ -12,14 +12,17 @@ img {
   margin-right: 5px;
 }
 .product_price {
-  color: rgb(235, 104, 104);
+  color: #812704;
 }
 .product_title {
   font-size: 18px;
   font-weight: 700;
-
+cursor: pointer;
+color: #007185;
 }
-
+.product_title:hover{
+  color: #812704;
+}
 #container {
   display: grid;
   grid-template-columns: auto auto auto auto;
