@@ -3,11 +3,17 @@
 <div class="register__container">
   <h1>Register here</h1>
   <form [formGroup]= 'addUser'>
-<input type="text" formControlName='name' placeholder="name">
+<input type="text" formControlName='name' placeholder="name" required>
+<span *ngIf="name!.invalid && ( name!.touched)"
+class="alert alert-danger">Name is required</span>
 <input type="text" formControlName='username' placeholder="username">
+<span *ngIf="username!.invalid &&(username!.touched)">Username is required</span>
 <input type="text" formControlName='email' placeholder="email" >
-<input type="text" formControlName='password' placeholder="password"> <br>
+<span *ngIf="email!.errors?.email">Email is invalid</span>
+<input type="text" formControlName='password' placeholder="password">
+<span *ngIf="password!.invalid &&(password!.touched)">Password is required</span> <br>
 <button class="register__signInButoon" (click)="addUsers()"[disabled]="addUser.invalid">register</button>
+<p class="signin" (click)="login()">Sign-in</p>
   </form>
 </div>
 </div>
