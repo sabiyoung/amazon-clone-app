@@ -16,38 +16,21 @@ import bodyParser from "body-parser";
 import Stripe from "stripe";
 import * as orderProcess from "./middleware/order.middleware.js";
 import { AdressModel } from "./schemas/adress.schema.js";
+
 const __dirname = path.resolve();
 dotenv.config();
 const access_secret = process.env.ACCESS_TOKEN_SECRET as string;
 
 const PORT = process.env.PORT || 5000;
 const app = express();
-const publishable = process.env.PUBLISHABLE_KEY;
-const secret = process.env.SECRETE_KEY!;
+
+const secret =process.env.STRIPE_SECRET_KEY as string;
 export const stripe = new Stripe(secret, {
   apiVersion: "2020-08-27",
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.post("/create-payment", function (req, res) {
-  stripe.charges
-    .create({
-      amount: 7000,
-      description: "Web dev",
-      currency: "USD",
-      source: req.body.token,
-    })
-    .then((charge) => {
-      console.log(charge);
-      res.send("Success");
-    })
-    .catch((err) => {
-      res.send(err);
-    });
-});
-
 const saltRounds = 10;
 
 mongoose
@@ -69,7 +52,23 @@ app.use(
 );
 app.use(express.json());
 
-
+app.post("/api/create-payment", function (req, res) {
+  stripe.charges.create({
+      amount: req.body.amount,
+      description: "Payment",
+      currency: "USD",
+      source: req.body.id,
+    })
+    .then((charge) => {
+      console.log(charge);
+      res.json({charge});
+    })
+    .catch((err) => {
+      console.log(err)
+      res.sendStatus(501);
+    });
+    console.log(req.body)
+});
 app.post("/api/create-product", function (req, res) {
   const { title, price, image, description, rating } = req.body;
   const product = new ProductModel({

@@ -41,4 +41,10 @@ incrementQty(product: Cart) {
 decrementQty(product:Cart) {
   return this.api.put<Cart>('decrement-quantity/' + product._id, product);
 }
+
+payment(amount:number, id:string) {
+  console.log("payment in cart", amount, id)
+return this.api.post('create-payment', {amount,id})
+}
+
 }

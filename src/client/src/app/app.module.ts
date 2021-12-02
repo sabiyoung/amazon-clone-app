@@ -70,7 +70,7 @@ import { FilterPipe } from './pipe/filter.pipe';
     MatCardModule,
     MatIconModule,
     TextFieldModule,
-    NgxStripeModule.forRoot('pk_test_51ILWaRK6FJ4NvQJQAfitXtvoOesU79Mex29dVJK0y2CXbqoOdmeceakJ0NaCWwvKbUuKTtaSsOj4U2KQeBtfoNZA005UNamqdp'),
+    // NgxStripeModule.forRoot('pk_test_51ILWaRK6FJ4NvQJQAfitXtvoOesU79Mex29dVJK0y2CXbqoOdmeceakJ0NaCWwvKbUuKTtaSsOj4U2KQeBtfoNZA005UNamqdp'),
     EffectsModule.forRoot([ProductEffects, UserEffects, CartEffects, OrderEffects]),
     FormsModule,
     ReactiveFormsModule,
