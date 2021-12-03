@@ -24,11 +24,11 @@ export class LoginComponent implements OnInit {
     this.addUser = this.fb.group({
       email: [
         '',
-        Validators.compose([Validators.required, Validators.minLength(3)]),
+        Validators.compose([Validators.required, Validators.email]),
       ],
       password: [
         '',
-        Validators.compose([Validators.required, Validators.minLength(5)]),
+        Validators.compose([Validators.required]),
       ],
     });
   }
@@ -41,5 +41,10 @@ export class LoginComponent implements OnInit {
   signin() {
     this.router.navigate(['/add-user']);
   }
- 
+  get email() {
+    return this.addUser.get('email');
+  } 
+  get password () {
+    return this.addUser.get('password')
+  } 
 }

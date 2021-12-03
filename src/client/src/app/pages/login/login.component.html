@@ -5,9 +5,11 @@
 <h1>Sign-in</h1>
 <form [formGroup] = 'addUser'>
   <h5>E-mail</h5>
-  <input type="text" formControlName='email' placeholder="email"> <br>
+  <input type="text" formControlName='email' placeholder="email"> 
+  <span *ngIf="email!.errors?.email">Email is invalid</span><br>
   <h5>Password</h5>
-  <input type="text" formControlName='password' placeholder="password"> <br>
+  <input type="text" formControlName='password' placeholder="password">
+  <span *ngIf="password!.invalid &&(password!.touched)">Password is required</span> <br>
   <button class="login__signInButoon" (click)="login()">Sign In</button>
 </form>
 <p>
