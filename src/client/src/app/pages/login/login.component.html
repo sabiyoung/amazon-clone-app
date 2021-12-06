@@ -8,7 +8,7 @@
   <input type="text" formControlName='email' placeholder="email"> 
   <span *ngIf="email!.errors?.email">Email is invalid</span><br>
   <h5>Password</h5>
-  <input type="text" formControlName='password' placeholder="password">
+  <input type="password" formControlName='password' placeholder="password">
   <span *ngIf="password!.invalid &&(password!.touched)">Password is required</span> <br>
   <button class="login__signInButoon" (click)="login()">Sign In</button>
 </form>

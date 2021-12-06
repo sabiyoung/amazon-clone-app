@@ -10,7 +10,7 @@ class="alert alert-danger">Name is required</span>
 <span *ngIf="username!.invalid &&(username!.touched)">Username is required</span>
 <input type="text" formControlName='email' placeholder="email" >
 <span *ngIf="email!.errors?.email">Email is invalid</span>
-<input type="text" formControlName='password' placeholder="password">
+<input type="password" formControlName='password' placeholder="password">
 <span *ngIf="password!.invalid &&(password!.touched)">Password is required</span> <br>
 <button class="register__signInButoon" (click)="addUsers()"[disabled]="addUser.invalid">register</button>
 <p class="signin" (click)="login()">Sign-in</p>
